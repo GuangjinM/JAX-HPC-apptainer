@@ -1,0 +1,17 @@
+# Large container artifacts
+*.sif
+*.tar
+
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Temporary verification files
+requirements-test-v1.txt
+requirements-test-v2.txt
+# Local development backup
+Dockerfile.original
