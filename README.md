@@ -39,6 +39,63 @@ The prebuilt container is intended for systems with:
 
 Slurm is not required by the container itself, but example Slurm scripts are provided for HPC usage.
 
+## Get the container
+
+The versioned container image is publicly available from the GitHub Container Registry (GHCR).
+
+### Docker / OCI image
+
+Pull the verified `v1.0.0` environment with:
+
+```bash
+docker pull ghcr.io/guangjinm/jax-hpc-apptainer:1.0.0
+```
+
+The `v1.0.0` image is available for `linux/amd64` systems.
+
+For strict reproducibility, the container image is identified by the following digest:
+
+```text
+sha256:4bba069f0637e9dc97e4ccc070ed75f7d47a4d49015709c25474766687eece06
+```
+
+### Apptainer / Singularity
+
+On HPC systems where Apptainer is allowed to pull and convert OCI images directly, create a SIF image with:
+
+```bash
+apptainer pull \
+    jax-hpc-apptainer_1.0.0.sif \
+    docker://ghcr.io/guangjinm/jax-hpc-apptainer:1.0.0
+```
+
+This creates:
+
+```text
+jax-hpc-apptainer_1.0.0.sif
+```
+
+The resulting SIF image can then be used for GPU workloads with:
+
+```bash
+apptainer exec --nv \
+    jax-hpc-apptainer_1.0.0.sif \
+    python -c "import jax; print(jax.devices())"
+```
+
+A successful GPU-enabled environment should report at least one CUDA device, for example:
+
+```text
+[CudaDevice(id=0)]
+```
+
+### HPC systems that restrict container conversion
+
+Some HPC systems restrict OCI-to-SIF conversion on login nodes.
+
+In this case, generate the SIF image on a Linux system where Apptainer build operations are permitted, and then transfer the resulting `.sif` file to the HPC system.
+
+The Docker/OCI image on GHCR remains the canonical binary distribution for this release.
 
 ## Quick start
 
